@@ -1,46 +1,57 @@
 import {Component, OnInit} from '@angular/core';
 import {Person} from "../../domain/person";
 import {ApiService} from "../../services/api.service";
-import { ConfirmationService } from 'primeng/api';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
+import {ConfirmationService} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {Department} from "../../domain/department";
 
 @Component({
   selector: 'app-person',
   templateUrl: './person.component.html',
-  styleUrls: ['./person.component.css']
+  styleUrls: ['./person.component.css'],
+  providers: [ConfirmationService, MessageService]
+
 })
-export class PersonComponent  implements  OnInit {
+export class PersonComponent implements OnInit {
 
   title: string = "All persons";
   personDialog: boolean = false;
+  loadingPers: boolean = true;
   persons: Person[] = [];
   departments: Department[] = [];
-  person: Person ;
+  products: [] = [];
+  departmentSelect: any;
+  person: Person;
   selectedPersons: Person[] = [];
   submitted: boolean = false;
-  constructor(private apiService: ApiService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+
+  constructor(private apiService: ApiService, private messageService: MessageService, private confirmationService: ConfirmationService,) {
+  }
+
   ngOnInit() {
-
-    // method getAllPersons
     this.getAllPersonne()
+    this.getAllDepartment();
+  }
 
-    //method getAllDepartment
-    this.apiService.getAllDepartment().subscribe({
+  getAllPersonne(): void {
+    console.log(this.loadingPers)
+    this.apiService.getAllPersons().subscribe({
       next: data => {
-        this.departments = data as any;
+        this.persons = data;
+        this.loadingPers = false;
       },
       error: err => {
         console.log(err)
       }
     });
+    console.log(this.loadingPers)
   }
 
-  getAllPersonne(): void {
-    this.apiService.getAllPersons().subscribe({
+  getAllDepartment(): void {
+    //method getAllDepartment
+    this.apiService.getAllDepartment().subscribe({
       next: data => {
-        this.persons = data;
+        this.departments = data as any;
       },
       error: err => {
         console.log(err)
@@ -54,21 +65,11 @@ export class PersonComponent  implements  OnInit {
     this.personDialog = true;
   }
 
-  deleteSelectedProducts() {
- this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected persons ?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-   /**    accept: () => {
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.selectedProducts = null;
-        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
-      }**/
-    });
-  }
 
   editPerson(person: Person) {
-   this.person = {...person};
+    this.person = {...person};
+    this.departmentSelect = person.department?.id;
+    console.log(person)
     this.personDialog = true;
   }
 
@@ -82,7 +83,7 @@ export class PersonComponent  implements  OnInit {
         this.apiService.deletePerson(person).subscribe({
           next: data => {
             console.log(data)
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Person Deleted', life: 3000});
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Person Deleted', life: 3000});
             // window.location.reload();
             this.getAllPersonne()
           },
@@ -102,27 +103,26 @@ export class PersonComponent  implements  OnInit {
   savePerson() {
     this.submitted = true;
 
-    if(this.person.firstname!.trim()) {
+    if (this.person.firstname!.trim()) {
       if (this.person.id) {
-        // console.log(this.person)
-        // console.log(this.person.id)
+        this.person.department = this.departmentSelect;
+
         this.apiService.updatePerson(this.person).subscribe({
           next: data => {
             // console.log(data);
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Person Updated', life: 3000});
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Person Updated', life: 3000});
             this.getAllPersonne();
           },
           error: error => {
             console.log(error);
           }
         })
-      }
-      else {
+      } else {
         console.log(this.person)
         this.apiService.createPerson(this.person).subscribe({
           next: data => {
             console.log(data);
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Person Created', life: 3000});
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Person Created', life: 3000});
             this.getAllPersonne();
           },
           error: error => {
@@ -136,7 +136,6 @@ export class PersonComponent  implements  OnInit {
       this.person = {};
     }
   }
-
 
   protected readonly event = event;
 }

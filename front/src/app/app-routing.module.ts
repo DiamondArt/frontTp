@@ -5,19 +5,27 @@ import {PersonComponent} from "./pages/person/person.component";
 import {MainComponent} from "./pages/main/main.component";
 
 const routes: Routes = [
+  // {
+  // path: '',
+  // // component: MainComponent,
+  // //   children:[
+  // //     {
+  // //       path: "home",
+  // //       component: HomeComponent
+  // //     },
+  // //     {
+  // //       path: "person",
+  // //       component: PersonComponent
+  // //     }
+  // //   ]
+  // }
   {
-  path: '',
-  component: MainComponent,
-    children:[
-      {
-        path: "home",
-        component: HomeComponent
-      },
-      {
-        path: "person",
-        component: PersonComponent
-      }
-    ]
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'person',
+    component: PersonComponent
   }
 ]
 

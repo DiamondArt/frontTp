@@ -1,81 +1,104 @@
-<!--p-toast></p-toast-->
+<p-toast></p-toast>
 <div class="py-3 py-6 ">
   <div class="card-container">
-  <p-table #dt [value]="persons" [rows]="10" [paginator]="true" [globalFilterFields]="['id','firstname','lastname','age']"
-           [(selection)]="selectedPersons" [rowHover]="true" dataKey="id"
-           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-    <ng-template pTemplate="caption">
-      <div class="p-d-flex p-ai-center p-jc-between">
-        <h5 class="p-m-0 mb-2 px-2 mt-2">Manage Persons</h5>
-        <span class="mb-2" >
-          <p-button icon="pi pi-plus"  label="New user" styleClass="p-button-primary mr-2" (click)="openNew()"></p-button>
-          <p-button icon="pi pi-trash"  label="Delete" styleClass="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedPersons || !selectedPersons.length"></p-button>
+    <p-table #dt [value]="persons" [rows]="10" [paginator]="true"
+             [globalFilterFields]="['id','firstname','lastname','age']"
+             [(selection)]="selectedPersons" [rowHover]="true" dataKey="id"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [showCurrentPageReport]="true">
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0 mb-2 px-2 mt-2">Manage Persons</h5>
+          <span class="mb-2">
+          <p-button icon="pi pi-plus" label="New user" styleClass="p-button-primary mr-2"
+                    (click)="openNew()"></p-button>
         </span>
-        <span class="p-input-icon-right mb-5 px-2" [style]="{'float': 'right'}">
+          <span class="p-input-icon-right mb-5 px-2" [style]="{'float': 'right'}">
           <i class="pi pi-search"></i>
-          <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')" placeholder="Search..." />
+          <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')" placeholder="Search..."/>
         </span>
 
-      </div>
+        </div>
 
-    </ng-template>
+      </ng-template>
 
-    <ng-template pTemplate="header">
-      <tr class="px-2">
-        <th style="width: 3rem" class="px-2">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th pSortableColumn="id" class="px-2">Id <p-sortIcon field="id"></p-sortIcon></th>
-        <th pSortableColumn="firstname" class="px-2">Firstname <p-sortIcon field="firstname"></p-sortIcon></th>
-        <th pSortableColumn="lastname" class="px-2">Lastname <p-sortIcon field="lastname"></p-sortIcon></th>
-        <th pSortableColumn="age" class="px-2">Age <p-sortIcon field="age"></p-sortIcon></th>
-        <th pSortableColumn="id_department" class="px-2">N° Department  <p-sortIcon field="id_department"></p-sortIcon></th>
-        <th></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-person>
-      <tr class="px-2 py-2">
-        <td class="px-2">
-          <p-tableCheckbox [value]="person"></p-tableCheckbox>
-        </td>
+      <ng-template pTemplate="header">
+        <tr class="px-2">
+          <th style="width: 3rem" class="px-2">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="id" class="px-2">Id
+            <p-sortIcon field="id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="firstname" class="px-2">Firstname
+            <p-sortIcon field="firstname"></p-sortIcon>
+          </th>
+          <th pSortableColumn="lastname" class="px-2">Lastname
+            <p-sortIcon field="lastname"></p-sortIcon>
+          </th>
+          <th pSortableColumn="age" class="px-2">Age
+            <p-sortIcon field="age"></p-sortIcon>
+          </th>
+          <th pSortableColumn="id_department" class="px-2">N° Department
+            <p-sortIcon field="id_department"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-person>
+        <tr class="px-2 py-2">
+          <td class="px-2">
+            <p-tableCheckbox [value]="person"></p-tableCheckbox>
+          </td>
 
-        <td class="px-2">{{person.id}}</td>
-        <td class="px-2">{{person.firstname}}</td>
-        <td class="px-2">{{person.lastname }}</td>
-        <td class="px-2">{{person.age}}</td>
-        <td class="px-2">{{person.department?.designation}}</td>
-        <td>
-          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editPerson(person)"></button>
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(person)"></button>
-        </td>
-      </tr>
-    </ng-template>
+          <td class="px-2">{{person.id}}</td>
+          <td class="px-2">{{person.firstname}}</td>
+          <td class="px-2">{{person.lastname }}</td>
+          <td class="px-2">{{person.age}}</td>
+          <td class="px-2">{{person.department?.designation}}</td>
+          <td>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                    (click)="editPerson(person)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                    (click)="deleteProduct(person)"></button>
+          </td>
+        </tr>
+      </ng-template>
 
-  </p-table>
-</div>
+    </p-table>
+
+
+  </div>
 </div>
 <p-dialog [(visible)]="personDialog" [style]="{width: '450px'}" header="" [modal]="true" styleClass="p-fluid px-3 py-3">
   <ng-template pTemplate="content" styleClass="px-2">
     <h3 class="mb-2 px-2">Detail person</h3>
     <div class="p-field px-3">
       <label for="firstname">Firstname</label>
-      <input type="text" pInputText id="firstname" [(ngModel)]="person.firstname" required  />
-      <small class="text-danger"  *ngIf="submitted && !person.firstname">Firstname is required.</small>
+      <input type="text" pInputText id="firstname" [(ngModel)]="person.firstname" required/>
+      <small class="text-danger" *ngIf="submitted && !person.firstname">Firstname is required.</small>
     </div>
     <div class="p-field px-3">
       <label for="firstname">Lastname</label>
-      <input type="text" pInputText id="lastname" [(ngModel)]="person.lastname" required  />
-      <small class="text-danger"  *ngIf="submitted && !person.lastname">Lastname is required.</small>
+      <input type="text" pInputText id="lastname" [(ngModel)]="person.lastname" required/>
+      <small class="text-danger" *ngIf="submitted && !person.lastname">Lastname is required.</small>
     </div>
     <div class="p-field px-3 mt-2 mb-2">
       <label class="p-mb-3 mb-1">Department</label>
       <div class="p-formgrid p-grid mt-1">
         <div class="p-field-radiobutton p-col-6" *ngFor="let department of departments;">
-          <p-radioButton id="departement" name="id_department" value="{{department.id}}" [(ngModel)]="person.department"></p-radioButton>
+          <p-radioButton *ngIf="person.id;else other_content" name="id_department" value="{{department.id}}"
+                         [(ngModel)]="departmentSelect"></p-radioButton>
+
+          <ng-template #other_content>
+            <p-radioButton id="departement" name="id_department" value="{{department.id}}"
+                           [(ngModel)]="person.department"></p-radioButton>
+          </ng-template>
           <label for="departement">{{department.designation}}</label>
+
         </div>
       </div>
-      <small class="text-danger"  *ngIf="submitted && !person.department">department is required.</small>
+      <small class="text-danger" *ngIf="submitted && !person.department">department is required.</small>
 
     </div>
     <div class="p-field px-3">

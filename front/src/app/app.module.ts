@@ -21,10 +21,11 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RatingModule } from 'primeng/rating';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ToastModule } from 'primeng/toast';
+import { SkeletonModule } from 'primeng/skeleton';
+import { CarouselModule } from 'primeng/carousel';
+import { TagModule } from 'primeng/tag';
 import {FileUploadModule} from 'primeng/fileupload';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
-import { MessageService } from 'primeng/api';
 import { PersonComponent } from './pages/person/person.component';
 import { MenuComponent } from './layout/menu/menu.component';
 import { MainComponent } from './pages/main/main.component';
@@ -61,11 +62,13 @@ import { MainComponent } from './pages/main/main.component';
     ToastModule,
     FileUploadModule,
     ConfirmDialogModule,
+    SkeletonModule,
+    CarouselModule,
+    TagModule
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
-    MessageService, ConfirmationService
   ],
   bootstrap: [AppComponent]
 })
